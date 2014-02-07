@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<style>@import url("http://fonts.googleapis.com/css?family=Titillium+Web:200,400,700,200italic");
@@ -421,11 +422,12 @@
 </svg></div>
 <p id="instruct"><em>Hover over the dots in the graphic above to see some facts about the new bridge.</em></p>
 <script type="text/javascript" src="./js/snap.svg.js"></script>
+<script type="text/javascript" src="./js/countUp.js"></script>
 <script type="text/javascript">
 var s = Snap("#bridge");
 
 
-s.select("g#Layer_1").animate({opacity: .3}, 2500, dots);
+s.select("g#Layer_1").animate({opacity: .3}, 500, dots); // sped up for development convenience
 
 function dots() {
 	s.select("g#Layer_2").animate({opacity: 1}, 2500);
@@ -439,7 +441,7 @@ function dots() {
 
 	var towerSpan = s.circle(182,125,0).attr({fill:"#cc203b", opacity:.5}).transform("skewY(-2) skewX(0)").animate({r: 8}, 500);
 	var towerSpanArrow = s.rect(190, 140, 0, 10).attr({class:"towerSpanArrow", fill:"#e8604d", opacity:.6}).transform("skewY(-2) skewX(0)");
-	var towerSpanText = s.text(195,130,"Tower Span: 1500 ft.").transform("skewY(-2) skewX(0)").attr({id: "towerSpanText", opacity: 0});
+	var towerSpanText = s.text(195,130,"0").transform("skewY(-2) skewX(0)").attr({id: "towerSpanText", opacity: 0});
 
 	var foundDepth = s.circle(215,280,0).transform("skewY(-8) skewX(1)").attr({fill:"#cc203b", opacity:.5}).animate({r: 8}, 500);
 	var foundDepthArrow = s.rect(195, 270, 10, 0).attr({class:"foundDepthArrow", fill:"#e8604d", opacity: .6}).transform("skewY(-8) skewX(1)");
@@ -475,7 +477,10 @@ function dots() {
 		}
 		
 	};
-	
+
+	// initiate countUp
+	var towerSpanTextCount = new countUp("towerSpanText", 0, 1500, 0, 2);
+
 	towerSpan.hover(towerSpanToggle);
 
 	function towerSpanToggle() {
@@ -483,13 +488,16 @@ function dots() {
 		{
 		towerSpanArrow.animate({width: 0}, 2000);
 		towerSpanText.animate({opacity: 0}, 500);
-		towerSpan.animate({opacity:.5}, 500)
+		towerSpan.animate({opacity:.5}, 500);
 		}
 		else
 		{
 		towerSpanArrow.animate({width: 250}, 2000);
 		towerSpanText.animate({opacity: 1}, 500);
 		towerSpan.animate({opacity: 1}, 500);
+		// call countUp
+		towerSpanTextCount.reset(); // in case it has already animated
+		towerSpanTextCount.start(); // start counting
 		}
 		
 	};	
